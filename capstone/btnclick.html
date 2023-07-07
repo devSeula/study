@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>메일 분석하기</title>
+        <meta name="description" content="대학생을 위한 메일작성 도우미">
+        
+        <!--CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+        <link href="css/newpage.css" rel="stylesheet">
+
+    </head>
+    
+    <body>
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="index.html"><img class="logo" src="images/logo.png" alt="메일 작성하기"></a></h1>
+            </header>
+        
+            <div class="wrapper">
+                
+                <div class="message">
+                    <label for="message">메일 내용</label>
+                    <textarea id="message" class="message" name="your-message"></textarea>
+                </div>
+                <div class="synonym">
+                    <label for="synonym">유의어</label>
+                    <textarea class="synonym",name="synonym"></textarea>
+                </div>
+                
+                <div class="buttons">
+                    <!--메일 바로가기 모음-->
+                    <div class="contact">
+                        <div class="mail">
+                            <a href="https://mail.google.com" title="gmail으로 공유">
+                                <img src="images/gmail1.png" width=36 height=30 alt="gmail">
+                            </a>
+                        </div>
+                        <div class="mail">
+                            <a href="https://mail.naver.com" title="naver으로 공유">
+                                <img src="images/naver1.png" width=36 height=30 alt="naver">
+                            </a>
+                        </div>
+                        <div class="mail">
+                            <a href="https://mail.daum.com" title="daum으로 공유">
+                                <img src="images/daum1.png" width=36 height=30 alt="daum">
+                            </a>
+                        </div> 
+                        <div class="mail">
+                            <a id="custom_mail" href="#" title="메일 주소 추가">
+                                <img id="custom" src="images/plus_orgin.png" width=36 height=30 alt="custom_mail"
+                                onclick="customlink()">
+                            </a>
+                        </div>
+                        <div class="mail">
+                            <a id="rewrite_mail" href="#" title="메일 주소 수정">
+                              <img id="rewrite" src="images/rewrite.png" width=36 height=30 alt="rewrite_mail" 
+                              onclick="rewritelink()">
+                            </a>
+                          </div>
+                    </div>
+                    <!--./메일 바로가기 모음-->
+
+                    <ul class="btn">
+                        <button id="btn" onclick="popup()">이전</button> <!-- popup()함수 실행 -->
+                        <button onclick="copy()">전체복사</button> <!--copy()함수 실행 -->
+                    </ul>
+
+                </div>
+            </div><!--/.wrapper-->
+        </div><!--/#home-->
+    </body>
+    
+    <script>
+        var linkcheck=false;
+        var link="";
+
+        keycheck();
+        function keycheck(){
+            if(localStorage.getItem("mail_addr")!=null){
+            linkcheck=true;
+            link=localStorage.getItem("mail_addr");
+            document.getElementById("custom").src="images/addmail1.png";
+            }
+        }
+
+        function popup(){
+            var result=confirm("이전 페이지로 이동하겠습니까?\n(현제 페이지의 변경내용은 저장되지 않습니다.)");
+            
+            if(result){
+                history.back();
+                // index.html로 이동. 단 내용분석을 클릭하기 전 index에 입력했던 정보들은 유지
+            }
+        }
+
+        function customlink(){ //링크 사용자 입력 기능
+            if(!linkcheck){
+                var linkurl=prompt("URL을 입력하세요"); //링크 입력창 출력
+                const addmail=document.getElementById("custom");
+                if(linkurl!=null){
+                    linkcheck=true;
+                    addmail.src="images/addmail1.png"; //이미지 변경
+                    link=linkurl; //링크 저장
+                    localStorage.setItem("mail_addr",link);
+                }else{
+                    alert("값을 입력하세요");  //경고
+                }
+            }else{
+                document.getElementById("custom_mail").href=link; //링크 실행
+            }
+        }
+        
+        function copy(){
+            var copytext=document.getElementById("message");
+
+        }
+
+        function rewritelink(){
+          if(linkcheck){
+            var relinkurl=prompt("URL을 입력하세요");
+            if(relinkurl!=null){
+              link=relinkurl;
+              localStorage.setItem("mail_addr",link);
+            }else{
+              alert("메일 주소 수정이 취소되었습니다.");
+            }
+          }
+        }
+    </script>
+
+</html>
